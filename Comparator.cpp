@@ -291,6 +291,7 @@ void Comparing (str Victim)
                             }
                             
                         }
+                        
                     }
                     else if (is_slk(file_in_Victim))
                     {
@@ -312,6 +313,10 @@ void Comparing (str Victim)
                             Writing(message, file_in_Victim, random_double);
                         }
                     }
+                    else 
+                    {
+                        news.FourthPrint(What_is_type_of_file(file_in_Victim));
+                    }
                     // I don't write for Sockets, Fifos, Characters, Blocks and Unknowns, because they must be equal more and I can't get data them
                 }
                 else // If a type for file_in_Victim and a type for anti_file_in_Victim are not equal, system write file to Result_file_path.txt
@@ -330,6 +335,7 @@ void Comparing (str Victim)
                 news.FourthPrint(What_is_type_of_file(file_in_Victim));
                 str record = "THE FILE \"" + file_in_Victim + "\" IS " + What_is_type_of_file(file_in_Victim);
                 str path_to_write = have_you_had_other_element_yet? Ghost_file_path_2 : Ghost_file_path_1;
+                
                 write(record, path_to_write);
             }
         }

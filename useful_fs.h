@@ -7,19 +7,33 @@ namespace fs = std::filesystem;
 
 bool there_is_FOF(str fof, str path) //  Is there element in folder
 {
-    str full = path + "/" + fof;
-    fs::path p(full);
-    if (fs::exists(p))
-        return true;
-    return false;
+    try {
+        str full = path + "/" + fof;
+        fs::path p(full);
+        if (fs::exists(p))
+            return true;
+        return false;
+    } catch (...)
+    {
+        return 0;
+    }
 }
 
 bool there_is(str path) //  Is there path in your OC
 {
-    fs::path p(path);
-    if (fs::exists(p))
-        return true;
-    return false;
+    try
+    {
+        fs::path p(path);
+        if (fs::exists(p))
+            return true;
+        return false;
+    }
+    catch(...)
+    {
+        return 0;
+    }
+    
+    
 }
 
 void make_dir(str path)             // Create folder
@@ -84,21 +98,34 @@ str current()                   // Return your current path
 
 bool is_dir(str path)       // Is this path directory
 {
-    if (there_is(path)) {
-        fs::path p(path);
-        if (fs::is_directory(p))
-            return true;
+    try {
+        if (there_is(path)) {
+            fs::path p(path);
+            if (fs::is_directory(p))
+                return true;
+        }
+        return false;
     }
-    return false;
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 bool is_reg(str path)      // Is this path regular
 {
-    if (there_is(path)) {
-        fs::path p (path);
-        if (fs::is_regular_file(p)) return true;
+    try {
+        if (there_is(path)) {
+            fs::path p (path);
+            if (fs::is_regular_file(p)) return true;
+        }
+        return false;
     }
-    return false;
+    catch (...)
+    {
+        return 0;
+    }
+    
 }
 
 bool is_binary_file(str path)           // Is this path binary file?
@@ -113,7 +140,7 @@ bool is_binary_file(str path)           // Is this path binary file?
         if (!file.is_open())
             return false;
 
-        char buffer[2000000];
+        char buffer[1000000];
         file.read(buffer, sizeof(buffer));
         std::streamsize bytes_read = file.gcount();
 
@@ -126,7 +153,7 @@ bool is_binary_file(str path)           // Is this path binary file?
         }
 
         double ratio = (bytes_read > 0) ? (double)suspicious / bytes_read : 0.0;
-        return ratio > 0.05; // >5% of spacial characters ==> binary file
+        return ratio > 0.0; // >0% of spacial characters ==> binary file
     }
     catch (const std::exception &e)
     {
@@ -136,84 +163,127 @@ bool is_binary_file(str path)           // Is this path binary file?
 
 bool is_text_file(str path)         // Is this a text file?
 {
-    if (!is_reg(path))
-        return false;
+    try {
+        if (!is_reg(path))
+            return false;
 
-    if (is_binary_file(path))
-        return false;
+        if (is_binary_file(path))
+            return false;
 
 
-    fs::path p (path);
-    std::ifstream file (p);
-    if (!file.is_open())
-    {
-        print(er_open);
-        return false;
+        fs::path p (path);
+        std::ifstream file (p);
+        if (!file.is_open())
+        {
+            print(er_open);
+            return false;
+        }
+
+
+        return true;
     }
-
-
-    return true;
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 bool is_slk(str path)       // Is this path symlink
 {
-    if (there_is(path)) {
-        fs::path p (path);
-        if (fs::is_symlink(p)) return true;
+    try {
+        if (there_is(path)) {
+            fs::path p (path);
+            if (fs::is_symlink(p)) return true;
+        }
+        return false;
+    } 
+    catch (...)
+    {
+        return 0;
     }
-    return false;
 }
 
 bool is_block(str path)         // Is this path block
 {
-    if (there_is(path))
-    {
-        fs::path p (path);
-        if (fs::is_block_file(p))
-            return 1;
+    try {
+        if (there_is(path))
+        {
+            fs::path p (path);
+            if (fs::is_block_file(p))
+                return 1;
+        }
+        return 0;
     }
-    return 0;
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 bool is_char_file(str path)          // Is this path character file
 {
-    if (there_is(path))
-    {
-        fs::path p (path);
-        if (fs::is_character_file(p)) return 1;
+    try {
+        if (there_is(path))
+        {
+            fs::path p (path);
+            if (fs::is_character_file(p)) return 1;
+        }
+        return 0;
     }
-    return 0;
+    catch (...)
+    {
+        return 0;
+    }
+    
 }
 
 bool is_fifo_file(str path)         // Is this path fifo
 {
-    if (there_is(path))
-    {
-        fs::path p (path);
-        if (fs::is_fifo(p))
-            return 1;
+    try {
+        if (there_is(path))
+        {
+            fs::path p (path);
+            if (fs::is_fifo(p))
+                return 1;
+        }
+        return 0;
     }
-    return 0;
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 bool is_sock (str path)
 {
-    if (there_is(path))
-    {
-        fs::path p (path);
-        if (fs::is_socket(p)) return 1;
+    try {
+        if (there_is(path))
+        {
+            fs::path p (path);
+            if (fs::is_socket(p)) return 1;
+        }
+        return 0;
     }
-    return 0;
-}
+    catch (...)
+    {
+        return 0;
+    }
+}   
 
 bool is_unknown (str path)
 {
-    if (there_is(path))
-    {
-        fs::path p (path);
-        if (fs::is_other(p)) return 1;
+    try {
+        if (there_is(path))
+        {
+            fs::path p (path);
+            if (fs::is_other(p)) return 1;
+        }
+        return 0;
     }
-    return 0;
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 str read_target (str path)          // System read symlink's target 
@@ -275,15 +345,21 @@ vec_str in_dir(str path)        // Input array which elements are full paths
         return result_in_dir;
     }
 
-    for (const auto &containing : fs::directory_iterator(p))
+    try
     {
-        fs::path containing_p = containing.path(); // I don't understand method "path()". Maybe it does variable in fs::path
-        str Containing = containing_p.string();    // Containing is string
-        result_in_dir.push_back(Containing);       // Push containing in result_in_dir
-    }
+        for (const auto &containing : fs::directory_iterator(p))
+        {
+            fs::path containing_p = containing.path(); // I don't understand method "path()". Maybe it does variable in fs::path
+            str Containing = containing_p.string();    // Containing is string
+            result_in_dir.push_back(Containing);       // Push containing in result_in_dir
+        }
 
-    return result_in_dir;
-}
+        return result_in_dir;
+    }
+    catch (...) {
+        return result_in_dir;
+    }
+}   
 
 int number_of_in_dir(str path)      // number of elements in folder
 {
