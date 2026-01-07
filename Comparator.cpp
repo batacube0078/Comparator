@@ -516,5 +516,10 @@ int main() {
 
     print(Beautiful_Done());
 
+
+
+    str message_and = "\n\n\n\n\n\n\n\n\n\n\nWRITE SOMETHING FOR CLOSING THE PROGRAM: ";
+    str rubbish_end = input(message_and);
+
     return 0;
 }
