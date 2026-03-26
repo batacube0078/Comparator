@@ -136,9 +136,14 @@ vec_int mirror_int(vec_int usual)
 
 
 
-void break_program(str text = "THE PROGRAM IS BROKEN")
+bool break_program(str text = "THE RUNNING IS BROKEN")
 {
-    throw std::runtime_error(text);
+    //throw std::runtime_error(text);
+    print(text);
+    str message_and = "\n\n\n\n\n\n\n\n\n\n\nWRITE SOMETHING FOR CLOSING THE PROGRAM: ";
+    str rubbish_end = input(message_and);
+
+    return 0;
 }
 
 

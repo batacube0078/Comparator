@@ -501,7 +501,7 @@ void Comparing (str Victim)
 
 int main() {
 
-    service.service_start();
+    if (!service.service_start()) return 0;
 
     What_types_to_compare(OBJECT_1, OBJECT_2);
 
@@ -516,10 +516,5 @@ int main() {
 
     print(Beautiful_Done());
 
-
-
-    str message_and = "\n\n\n\n\n\n\n\n\n\n\nWRITE SOMETHING FOR CLOSING THE PROGRAM: ";
-    str rubbish_end = input(message_and);
-
-    return 0;
+    return break_program();
 }

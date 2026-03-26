@@ -326,7 +326,7 @@ class Service
         news.Setting_for_output_news(Set_message);
     }
 
-    void six() // System remove Result_folder, Result_file.txt and Ghost_file.txt
+    bool six() // System remove Result_folder, Result_file.txt and Ghost_file.txt
     {
         while (true)
         {
@@ -376,7 +376,7 @@ class Service
                 {
                     while (there_is(victim))
                     {
-                        str q = "Can I remove \"" + victim + "\"? I don't need it.";
+                        str q = "Can I remove \"" + victim + "\"? I don't need it. It can let me!";
                         str v0 = "[#] No and I move it to other folder";
                         str v1 = "[Other] Yeah";
 
@@ -387,9 +387,9 @@ class Service
                         if (input() == "#")
                         {
                             str text = "Ok. I wait.";
-                            q = "Are you ready?";
+                            q = "Are you ready? [Something]: ";
                             print(text);
-                            print(q);
+                            print(q, 0);
                             print(v1);
                             str v = input();
                         }
@@ -397,7 +397,18 @@ class Service
                         remove(victim);
                         if (there_is(victim))
                         {
-                            print("I cannot remove it");
+                            print("I cannot remove it. If you don't fix the problem or you don't move it to other folder, \nI break the running!");
+                            str q666 = "Are you ready? [Something]: ";
+                            print(q666, 0);
+                            str v = input();
+
+                            if (there_is(victim))
+                            {
+                                print("I said you");
+                                str fuck_break_135 = "THE RUNNING IS BROKEN BY PROGRAM, BECAUSE IT WAS OFFERED BY USER!";
+                                return break_program(fuck_break_135);
+                            }
+
                             continue;
                         }
                     }
@@ -407,7 +418,7 @@ class Service
             
             break;
         }
-        
+        return 1;
     }
 
 
@@ -907,7 +918,7 @@ class Service
                 {
                     str text = "The folder \"" + path + "\" in " + Comparator + " is not folder!";
                     str q = "Can I recreate it to folder? /n(If this file is important for you, you should move to other directory)";
-                    str v0 = "[#] No and BREAK program";
+                    str v0 = "[#] No";
                     str v1 = "[Other] Yes";
 
                     print(text);
@@ -957,12 +968,12 @@ class Service
             return false;
     }
 
-    void two() // You choose where system compare your files/folders
+    bool two() // You choose where system compare your files/folders
     {
         str text = "Where should I compare your files/folders/etc?";
         str v1 = "[1] In folder \"" + Comparator + "\" and I move elements inside the folder";
         str v2 = "[2] I show you the way with my written path";
-        str v0 = "[#] BREAK PROGRAM";
+        str v0 = "[#] BREAK THE RUNNING";
 
         while (true) // For getting OBJECT_1 and OBJECT_2 and create construction
         {
@@ -975,7 +986,7 @@ class Service
 
             if (v == "#")
             {
-                break_program();
+                return break_program();
             }
             else if (v == "1")
             {
@@ -1004,11 +1015,12 @@ class Service
         }
 
 
-        six();
+        if (!six()) return 0;
         seven();
+        return 1;
     }
 
-    void one() // It create or recreate a folder "Comparator" and write Informaiton.txt in the folder
+    bool one() // It create or recreate a folder "Comparator" and write Informaiton.txt in the folder
     {
         Comparator_path = PATH + "/" + Comparator;
         while (!is_dir(Comparator_path))
@@ -1023,13 +1035,13 @@ class Service
             }
 
             str v1 = "[Other] Yes";
-            str v0 = "[#] No and BREAK PROGRAM";
+            str v0 = "[#] No and BREAK THE RUNNING";
             print(text);
             print(q);
             print(v0);
             print(v1);
             if (input(a) == "#")
-                break_program();
+                return break_program();
 
             if (there_is(Comparator_path)) // I don't create variable bools because I want give user time for move undirectory
                 remove(Comparator_path);
@@ -1075,7 +1087,7 @@ class Service
 
                 while (there_is(Information_for_Using_path) && !is_text_file(Information_for_Using_path)) // Removing Information.txt
                 {
-                    print("I remove the " + Information_for_Using + " in \"" + Comparator_path + "\". It miss me. If the notext file is important for you, you move the file in other directories\nCan I remove it?");
+                    print("I remove the " + Information_for_Using + " in \"" + Comparator_path + "\". It can let me. If the notext file is important for you, you move the file in other directories\nCan I remove it?");
                     print("[#] No and I don't want to get " + Information_for_Using + " more");
                     print("[Other] Yeah");
 
@@ -1101,17 +1113,19 @@ class Service
 
             break;
         }
-        two();
+        return two();
     }
 
 public:
-    void service_start()
+    bool service_start()
     {
-        one();
+        if (!one()) return 0;
         str error_in_equal = "THE FIRST ELEMENT \"" + OBJECT_1 + "\" AND THE SECOND ELEMENT \"" 
             + OBJECT_2 + "\" ARE EQUAL! THERE IS NO POINT IN COMPARING ELEMENTS!";
         if (OBJECT_1 == OBJECT_2)
-            break_program(error_in_equal);
+            return break_program(error_in_equal);
         OBJECTS = {OBJECT_1, OBJECT_2};   
+
+        return 1;
     }
 };
