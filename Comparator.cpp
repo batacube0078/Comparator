@@ -4,7 +4,7 @@
 Service service;
 
 
-int What_count_of_lines (str path)
+int What_count_of_lines (const str& path)
 {
     int result = 0;
     fs::path p (path);
@@ -100,7 +100,7 @@ void What_types_to_compare(str obj_1, str obj_2)
 
 bool have_you_had_other_element_yet = 0; // If (true) system find antagonist for OBJECT_2, else for OBJECT_1
 
-str antagonist(str path)    //  ./OBJECT_1/FILE.txt      <==[It antagonist]==>     ./OBJECT_2/FILE.txt
+str antagonist(const str& path)    //  ./OBJECT_1/FILE.txt      <==[It antagonist]==>     ./OBJECT_2/FILE.txt
 {
     vec_str object_split = split(OBJECT_1, {'/', '\\'});    // We cut OBJECT piece by piece
     str anti_object = OBJECT_2;                             // Antagonist for OBJECT
@@ -126,7 +126,7 @@ str antagonist(str path)    //  ./OBJECT_1/FILE.txt      <==[It antagonist]==>  
 }
 
 
-void Writing(str text, str path, str Randomly, str line = space)          // If your OBJECTs are FOLDERS , system use the function
+void Writing(const str& text, const str& path, const str& Randomly, str line = space)          // If your OBJECTs are FOLDERS , system use the function
 {
     if (what_types_to_compare == 1)
     {
@@ -164,9 +164,8 @@ void Writing(str text, str path, str Randomly, str line = space)          // If 
     }   
 }
 
-void Comparing (str Victim)
+void Comparing(const str& Victim, const str& anti_Victim)
 {
-    str anti_Victim = antagonist(Victim);
     
     //print(what_types_to_compare);
     if (what_types_to_compare == 1)      // If two elements are folders
@@ -177,13 +176,13 @@ void Comparing (str Victim)
             news.FirstPrint("I GOT PATH: " + file_in_Victim);
             if (there_is(file_in_Victim)) // If Victim is exist
             {
-                str anti_file_in_Victim = antagonist(file_in_Victim); // It is antagonist to Victim
+                str anti_file_in_Victim = anti_Victim + "/" + FOF_without_path(file_in_Victim); // It is antagonist to Victim
                 if (What_is_type_of_file(file_in_Victim) == What_is_type_of_file(anti_file_in_Victim))
                 {
                     if (is_dir(file_in_Victim))             // If element from Victim is folder
                     {
                         news.FourthPrint(What_is_type_of_file(file_in_Victim));
-                        Comparing(file_in_Victim);
+                        Comparing(file_in_Victim, anti_file_in_Victim);
                     }
                     else if (is_reg(file_in_Victim))
                     {
@@ -197,11 +196,7 @@ void Comparing (str Victim)
                             str what_is_regular = What_is_type_of_file(file_in_Victim) + " AND BINARY FILE";
                             news.FourthPrint(what_is_regular);
                         }
-
-
-
-
-
+                        
 
                         if (is_text_file(file_in_Victim) && is_text_file(anti_file_in_Victim))
                         {
@@ -509,7 +504,7 @@ int main() {
     {
         news.FirstPrint("I GOT PATH: " + OBJECTS[i]);
         news.FourthPrint(What_is_type_of_file(OBJECTS[i]));
-        Comparing(OBJECTS[i]);
+        Comparing(OBJECTS[i], OBJECTS[OBJECTS.size() - 1 - i]);
     }
 
 

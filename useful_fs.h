@@ -3,30 +3,37 @@
 #include <filesystem>
 #include <fstream>
 
+// Dangerous
+// "Dangerous" characters that must not be used in file names
+str dangerous_chars = "\\/:*?\"<>|";
+#ifdef _WIN32
+    vec_char cutter_characters = {'\\', '/'};
+#elif __APPLE__
+    vec_char cutter_characters = {'/', ':'};
+#else
+    vec_char cutter_characters = {'/'};
+#endif
+
 namespace fs = std::filesystem;
 
-bool there_is_FOF(str fof, str path) //  Is there element in folder
+bool there_is_FOF(const str &fof, const str &path) //  Is there element in folder
 {
     try {
         str full = path + "/" + fof;
         fs::path p(full);
-        if (fs::exists(p))
-            return true;
-        return false;
+        return fs::exists(p);
     } catch (...)
     {
         return 0;
     }
 }
 
-bool there_is(str path) //  Is there path in your OC
+bool there_is(const str &path) //  Is there path in your OC
 {
     try
     {
         fs::path p(path);
-        if (fs::exists(p))
-            return true;
-        return false;
+        return fs::exists(p);
     }
     catch(...)
     {
@@ -36,7 +43,7 @@ bool there_is(str path) //  Is there path in your OC
     
 }
 
-void make_dir(str path)             // Create folder
+bool make_dir(const str& path)             // Create folder
 {
     if (!there_is(path))
     {
@@ -50,33 +57,33 @@ void make_dir(str path)             // Create folder
             {
                 //print("      ERROR: ", 0);
                 //print(ec);
-                //return false;
+                return false;
             }
             else
             {
                 if (!ok)
                 {
                     print("Folder is already created or ERROR");
-                    //return false;
+                    return false;
                 }
             }
-            //return true;
+            return true;
         }
         catch (...)
         {
             //return false;
             print(er_mk);
+            print(ec);
+            return false;
         }
     }
+    else return true;
 }
 
-bool empty(str path)            // Is this file empty?
+bool empty(const str &path) // Is this file empty?
 {
     fs::path p(path);
-
-    if (fs::is_empty(p))
-        return true;
-    return false;
+    return fs::is_empty(p);
 }
 
 str current()                   // Return your current path
@@ -95,8 +102,7 @@ str current()                   // Return your current path
     }
 }
 
-
-bool is_dir(str path)       // Is this path directory
+bool is_dir(const str &path) // Is this path directory
 {
     try {
         if (there_is(path)) {
@@ -112,7 +118,7 @@ bool is_dir(str path)       // Is this path directory
     }
 }
 
-bool is_reg(str path)      // Is this path regular
+bool is_reg(const str &path) // Is this path regular
 {
     try {
         if (there_is(path)) {
@@ -128,7 +134,7 @@ bool is_reg(str path)      // Is this path regular
     
 }
 
-bool is_binary_file(str path)           // Is this path binary file?
+bool is_binary_file(const str &path) // Is this path binary file?
 {
     try
     {
@@ -161,7 +167,7 @@ bool is_binary_file(str path)           // Is this path binary file?
     }
 }
 
-bool is_text_file(str path)         // Is this a text file?
+bool is_text_file(const str &path) // Is this a text file?
 {
     try {
         if (!is_reg(path))
@@ -188,7 +194,7 @@ bool is_text_file(str path)         // Is this a text file?
     }
 }
 
-bool is_slk(str path)       // Is this path symlink
+bool is_slk(const str &path) // Is this path symlink
 {
     try {
         if (there_is(path)) {
@@ -203,7 +209,7 @@ bool is_slk(str path)       // Is this path symlink
     }
 }
 
-bool is_block(str path)         // Is this path block
+bool is_block(const str &path) // Is this path block
 {
     try {
         if (there_is(path))
@@ -220,7 +226,7 @@ bool is_block(str path)         // Is this path block
     }
 }
 
-bool is_char_file(str path)          // Is this path character file
+bool is_char_file(const str &path) // Is this path character file
 {
     try {
         if (there_is(path))
@@ -237,7 +243,7 @@ bool is_char_file(str path)          // Is this path character file
     
 }
 
-bool is_fifo_file(str path)         // Is this path fifo
+bool is_fifo_file(const str &path) // Is this path fifo
 {
     try {
         if (there_is(path))
@@ -254,7 +260,7 @@ bool is_fifo_file(str path)         // Is this path fifo
     }
 }
 
-bool is_sock (str path)
+bool is_sock(const str &path)
 {
     try {
         if (there_is(path))
@@ -270,7 +276,7 @@ bool is_sock (str path)
     }
 }   
 
-bool is_unknown (str path)
+bool is_unknown (const str& path)
 {
     try {
         if (there_is(path))
@@ -286,7 +292,7 @@ bool is_unknown (str path)
     }
 }
 
-str read_target (str path)          // System read symlink's target 
+str read_target (const str& path)          // System read symlink's target 
 {
     try 
     {
@@ -333,7 +339,7 @@ str read_target (str path)          // System read symlink's target
 }*/
 
 
-vec_str in_dir(str path)        // Input array which elements are full paths
+vec_str in_dir(const str &path)        // Input array which elements are full paths
 {
     fs::path p(path);
     vec_str result_in_dir; // All containing
@@ -361,7 +367,7 @@ vec_str in_dir(str path)        // Input array which elements are full paths
     }
 }   
 
-int number_of_in_dir(str path)      // number of elements in folder
+int number_of_in_dir(const str& path)      // number of elements in folder
 {
     if (is_dir(path)) {
         int count = 0;
@@ -398,21 +404,21 @@ void remove(str path)       // delete file and folder
     }
 }
 
-str FOF_without_path(str path)      // For exemple: {"C:", "User", "Document", "Project"} ===> "Project"
+str FOF_without_path(const str& path)      // For exemple: {"C:", "User", "Document", "Project"} ===> "Project"
 { 
-    vec_str split_path = split(path, {'\\', '/'});
+    vec_str split_path = split(path, cutter_characters);
     return split_path[split_path.size() - 1];
 }
 
-str Exit (str path) 
+void Exit (str& path) 
 {
-    vec_str result = split(path, {'\\', '/'});
+    vec_str result = split(path, cutter_characters);
     result.pop_back();
-    return join(result, '/');
+    path = join(result, '/');
 }
 
 
-str What_is_type_of_file(str path) 
+str What_is_type_of_file(const str& path) 
 {
     if (there_is(path))
     {
@@ -437,11 +443,3 @@ str What_is_type_of_file(str path)
     return "NOT-EXIST";
 }
 
-
-/*void recreate(str path)
-{
-    //if (there_is(path))
-    //    remove(path);
-    if (!there_is(path))
-        make_dir(path);
-}*/

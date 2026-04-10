@@ -15,28 +15,25 @@ using vec_bool = std::vector<bool>;
 using vec_double = std::vector<double>;
 using vec_float = std::vector<float>;
 
+
 // ERRORS
 str er_wd = "\n      ERROR: YOU HAVE ENTERED THE WRONG DATA!";
 str er_cur = "\n      ERROR: I CAN NOT SHOW CURRENT DIRECTORY!";
 str er_del = "\n      ERROR: I CAN NOT DELETE THE ELEMENT!";
 str er_mk = "\n      ERROR: I CAN NOT CREATE FOLDER!";
 str er_open = "\n       ERROR: I CAN NOT OPEN THE FILE!";
-
 // Useful
-str space; // This is always empty. Use and don't touch !!!
+str space;               // This is always empty. Use and don't touch !!!
 vec_char vec_space_char; // This is always empty. Use and don't touch !!!
-
 // for answer
 str a = "===> ";
-
 //////////////////////////////////////////
-void print(vec_str texts, bool b = 1, bool b1 = 1)
+void print(const vec_str &texts, bool b = 1, bool b1 = 1)
 {
     if (b1)
         std::cout << "{ " << std::flush;
-    else 
+    else
         std::cout << "{ ";
-
     for (const str &text : texts)
     {
         if (b1)
@@ -46,15 +43,14 @@ void print(vec_str texts, bool b = 1, bool b1 = 1)
     }
     if (b1)
         std::cout << " }" << std::flush;
-    else 
+    else
         std::cout << " }";
-
     if (b)
         std::cout << std::endl;
 }
 
 template <typename T>
-void print(T text, bool b = 1, bool b1 = 1)
+void print(const T &text, bool b = 1, bool b1 = 1)
 {
     if (b1)
         std::cout << text  << std::flush;
@@ -99,9 +95,9 @@ str to_str(T v)
 
 
 template <typename T>
-bool inside(T ELEMENT, std::vector<T> ARRAY)     //  9 in array with has {1, 2, 8, 6}?  No
+bool inside(const T& ELEMENT, const std::vector<T> &ARRAY)     //  9 in array with has {1, 2, 8, 6}?  No
 {
-    for (T element : ARRAY)
+    for (const T& element : ARRAY)
     {
         if (ELEMENT == element)
             return true;
@@ -110,7 +106,7 @@ bool inside(T ELEMENT, std::vector<T> ARRAY)     //  9 in array with has {1, 2, 
 }
 
 
-vec_str mirror_str(vec_str usual) //  {1, 2, 3, 4, 5} ==> {5, 4, 3, 2, 1}
+vec_str mirror_str(const vec_str& usual) //  {1, 2, 3, 4, 5} ==> {5, 4, 3, 2, 1}
 {
     vec_str result;
 
@@ -121,7 +117,7 @@ vec_str mirror_str(vec_str usual) //  {1, 2, 3, 4, 5} ==> {5, 4, 3, 2, 1}
     return result;
 }
 
-vec_int mirror_int(vec_int usual)
+vec_int mirror_int(const vec_int& usual)
 {
     vec_int result;
 
@@ -136,7 +132,7 @@ vec_int mirror_int(vec_int usual)
 
 
 
-bool break_program(str text = "THE RUNNING IS BROKEN")
+bool break_program(const str& text = "THE RUNNING IS BROKEN")
 {
     //throw std::runtime_error(text);
     print(text);
@@ -161,13 +157,15 @@ str join (vec_str array_str, char c = 0)
     return result + array_str[max_size - 1];
 }
 
-vec_str split(str text, vec_char C = vec_space_char)   // "C" this is vector of characters, "c" this is character
+
+
+vec_str split(const str& text, const vec_char& C = vec_space_char)   // "C" this is vector of characters, "c" this is character
 {
     vec_str array;
     str element;
 
     if (C != vec_space_char) {
-        for (char character : text)
+        for (const char & character : text)
         {
             if (inside(character, C)) {
                 array.push_back(element);

@@ -6,8 +6,6 @@
 //  CLASSES
 NEWS news;
 
-// Dangerous
-str dangerous_chars = "\\/:*?\"<>|"; // "Dangerous" characters that must not be used in file names
 
 void write(str text, str path, bool b = 1) // Writes "text" to "path". If b is true, the system uses std::ios_base::app, otherwise it rewrites the file
 {
@@ -462,7 +460,7 @@ class Service
 
                 if (!there_is(For_comparator_path))
                 {
-                    make_dir(For_comparator_path);
+                    if (!make_dir(For_comparator_path)) continue;
                     if (there_is(For_comparator_path))
                         break;
                 }
@@ -751,8 +749,8 @@ class Service
             return false;
     }
 
-    bool four_1(str path)
-    { // You create a new folder in In_(other, this)_path
+    bool four_1(str path) // You create a new folder in In_(other, this)_path
+    { 
         while (true)
         {
             str r = random_string_each(15, dangerous_chars, 0, '_');
@@ -819,14 +817,14 @@ class Service
                 }
 
                 str name = path + "/" + n;
-                make_dir(name);
+                if (!make_dir(name)) continue;
                 if (there_is(name))
                 {
                     Project_path = name;
                     if (path == In_this_paths__path)
                     {
                         For_comparator_path = Project_path + "/" + For_comparator;
-                        make_dir(For_comparator_path);
+                        if (!make_dir(For_comparator_path)) continue;
                     }
 
                     return true;
@@ -898,11 +896,7 @@ class Service
                 return true;
             }
             else // If you chose [Other]
-            {
-                if (!four_1(path))
-                    return false;
-                return true;
-            }
+                return four_1(path);
         }
     }
 
@@ -941,7 +935,7 @@ class Service
                 }
                 if (!there_is(path))
                 {
-                    make_dir(path);
+                    if (!make_dir(path)) continue;
                     if (there_is(path))
                         break;
                 }
@@ -1049,12 +1043,12 @@ class Service
             {
                 In_other_paths__path = Comparator_path + "/" + In_other_paths;
                 In_this_paths__path = Comparator_path + "/" + In_this_paths;
-                make_dir(Comparator_path);
+                if (!make_dir(Comparator_path)) continue;
 
                 if (there_is(Comparator_path))
                 {
-                    make_dir(In_other_paths__path);
-                    make_dir(In_this_paths__path);
+                    if (!make_dir(In_other_paths__path)) continue;
+                    if (!make_dir(In_this_paths__path)) continue;
                     break;
                 }
             }
