@@ -1,26 +1,25 @@
+#pragma once
 #include "useful.h"
 
-// I need to rewrite text, because I have new arguments
-
 str Information_for_Using_text_function(
-    str Comparator,
-    str In_other_paths,
-    str In_this_paths,
-    str OBJ_1,
-    str OBJ_2,
-    str For_comparator,
-    str Result_file_1,
-    str Result_file_2,
-    str Result_file,
-    str Ghost_file_1,
-    str Ghost_file_2,
-    str Ghost_file,
-    str Result_folder,
-    str First_compared_element,
-    str Second_compared_element,
-    str Where_is_this_file,
-    str Where_is_this_file_alt,
-    str info
+    const str& Comparator,
+    const str& In_other_paths,
+    const str& In_this_paths,
+    const str& OBJ_1,
+    const str& OBJ_2,
+    const str& For_comparator,
+    const str& Result_file_1,
+    const str& Result_file_2,
+    const str& Result_file,
+    const str& Ghost_file_1,
+    const str& Ghost_file_2,
+    const str& Ghost_file,
+    const str& Result_folder,
+    const str& First_compared_element,
+    const str& Second_compared_element,
+    const str& Where_is_this_file,
+    const str& Where_is_this_file_alt,
+    const str& info
 )
 {
     str text =

@@ -1,39 +1,43 @@
 #pragma once
-#include "useful_fs.h"
+#include "useful_fs_str.h"
 #include "Information_for_Using_text.h"
 #include "random.h"
 #include "News_in_Comparing.h"
 
-namespace srf {
+
+namespace srs {
 //  CLASSES
 NEWS news;
 
-template <class T>
-void write(const T& text, const uff::fsp& path, const bool &  b = 1) // Writes "text" to "path". If b is true, the system uses std::ios_base::app, otherwise it rewrites the file
+
+void write(const str& text, const str& path, const bool& b = 1) // Writes "text" to "path". If b is true, the system uses std::ios_base::app, otherwise it rewrites the file
 {
     if (!b)
     {
-        std::ofstream recording(path);
+        ufs::fsp p(path);
+        std::ofstream recording(p);
         if (text != space)
             recording << text << std::endl;
         recording.close();
     }
     else
     {
-        std::ofstream recording(path, std::ios_base::app);
+        ufs::fsp p(path);
+        std::ofstream recording(p, std::ios_base::app);
         if (text != space)
             recording << text << std::endl;
         recording.close();
     }
 }
 
-str read(const uff::fsp & path, const bool &  b = 1)      // If "b" is false, system use std::ios_base::binary
+str read(const str& path, const bool& b = 1)      // If "b" is false, system use std::ios_base::binary
 {
     try
     {
         if (!b)
         {
-            std::ifstream file_stream(path, std::ios_base::binary);
+            uff::fsp p(path);
+            std::ifstream file_stream(p, std::ios_base::binary);
             if (!file_stream)
                 return space;
 
@@ -51,7 +55,8 @@ str read(const uff::fsp & path, const bool &  b = 1)      // If "b" is false, sy
         }
         else
         {
-            std::ifstream file_stream(path);
+            uff::fsp p(path);
+            std::ifstream file_stream(p);
             if (!file_stream)
                 return space;
 
@@ -80,9 +85,8 @@ str read(const uff::fsp & path, const bool &  b = 1)      // If "b" is false, sy
             return Full_content;
         }
     }
-    catch (const uff::ferror & er)
+    catch (...)
     {
-        uff::print_er(er);
         return space;
     }
 }
@@ -143,72 +147,72 @@ str read(const uff::fsp & path, const bool &  b = 1)      // If "b" is false, sy
 
 /////////////////////////////////////////////////////////////////////[ REGISTRATION ]//////////////////////////////////////////////////////////////////////////
 
-uff::fsp PATH = uff::current(); // Your current path
+str PATH = ufs::current(); // Your current path
 
 /////////////////////////////////////////[ FIRST FUNCTION ]////////////////////////////////////////
 
-uff::fsp Comparator = "Comparator";
-uff::fsp Comparator_path; // path
+str Comparator = "Comparator";
+str Comparator_path; // path
 
-uff::fsp Information_for_Using = "Information.txt"; // It explains how to use "Comparator"
-uff::fsp Information_for_Using_path;                // path
+str Information_for_Using = "Information.txt"; // It explains how to use "Comparator"
+str Information_for_Using_path;                // path
 
 //////////////////////////////////////////[ THIRD FUNCTION ]///////////////////////////////////////
 
-uff::fsp In_other_paths = "In_other_paths";
-uff::fsp In_other_paths__path; // path
+str In_other_paths = "In_other_paths";
+str In_other_paths__path; // path
 
-uff::fsp In_this_paths = "In_this_paths";
-uff::fsp In_this_paths__path; // path
+str In_this_paths = "In_this_paths";
+str In_this_paths__path; // path
 
 //////////////////////////////////////////[ FOURTH FUNCTION ]//////////////////////////////////////
 
-uff::fsp Project_path; // For exemple: C:\User\Document\Project\er4EF77r
+str Project_path; // For exemple: C:\User\Document\Project\er4EF77r
 
 ///////////////////////////////////////////[ FIFTH FUNCTION ]//////////////////////////////////////
 
-uff::fsp OBJ_1 = "OBJECT_1.txt";
-uff::fsp OBJ__1; // path in "Comparator". This is a text file
+str OBJ_1 = "OBJECT_1.txt";
+str OBJ__1; // path in "Comparator". This is a text file
 
-uff::fsp OBJ_2 = "OBJECT_2.txt";
-uff::fsp OBJ__2; // path in "Comparator". This is a text file
+str OBJ_2 = "OBJECT_2.txt";
+str OBJ__2; // path in "Comparator". This is a text file
 
-uff::fsp For_comparator = "For_comparator";
-uff::fsp For_comparator_path; // path
+str For_comparator = "For_comparator";
+str For_comparator_path; // path
 
 /////////////////////////////////////////////////
 
-uff::fsp OBJECT_1; // path for comparing.    It is the most IMPORTANT in Service
-uff::fsp OBJECT_2; // path for comparing.    It is the most IMPORTANT in Service
-vec<uff::fsp> OBJECTS;        //  For using LOOP
+str OBJECT_1; // path for comparing.    It is the most IMPORTANT in Service
+str OBJECT_2; // path for comparing.    It is the most IMPORTANT in Service
+vec<str> OBJECTS;        //  For using LOOP
 /////////////////////////////////////////////[ SIXTH FUNCTION ]////////////////////////////////////
 
-uff::fsp Result_file = "Result_file.txt";
-uff::fsp Result_file_path; // path
-uff::fsp Result_file_1 = "Result_file_1.txt";
-uff::fsp Result_file_path_1; // path
-uff::fsp Result_file_2 = "Result_file_2.txt";
-uff::fsp Result_file_path_2; // path
+str Result_file = "Result_file.txt";
+str Result_file_path; // path
+str Result_file_1 = "Result_file_1.txt";
+str Result_file_path_1; // path
+str Result_file_2 = "Result_file_2.txt";
+str Result_file_path_2; // path
 
-uff::fsp Ghost_file = "Ghost_files.txt";
-uff::fsp Ghost_file_path; // path
-uff::fsp Ghost_file_1 = "Ghost_files_1.txt";
-uff::fsp Ghost_file_path_1; // path
-uff::fsp Ghost_file_2 = "Ghost_files_2.txt";
-uff::fsp Ghost_file_path_2; // path
+str Ghost_file = "Ghost_files.txt";
+str Ghost_file_path; // path
+str Ghost_file_1 = "Ghost_files_1.txt";
+str Ghost_file_path_1; // path
+str Ghost_file_2 = "Ghost_files_2.txt";
+str Ghost_file_path_2; // path
 
-uff::fsp Result_folder = "Result_folder";
-uff::fsp Result_folder_path; // path
+str Result_folder = "Result_folder";
+str Result_folder_path; // path
 
-uff::fsp First_compared_element = "#1_element";  // \0.000001\#1 element
-uff::fsp Second_compared_element = "#2_element"; // \0.000001\#2 element
+str First_compared_element = "#1_element";  // \0.000001\#1 element
+str Second_compared_element = "#2_element"; // \0.000001\#2 element
 
-uff::fsp Where_is_this_file = "Where.txt";             // \0.000001\#1 element\Where.txt
-uff::fsp Where_is_this_file_alt = "Where_is_this.txt"; // \0.000001\#1 element\Where_is_this.txt       Used if compared folder has regular file with name "Where.txt"
+str Where_is_this_file = "Where.txt";             // \0.000001\#1 element\Where.txt
+str Where_is_this_file_alt = "Where_is_this.txt"; // \0.000001\#1 element\Where_is_this.txt       Used if compared folder has regular file with name "Where.txt"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Print_main(const bool &  q = false, const int& Q = 0)
+void Print_main(bool q = false, int Q = 0)
 { // Used to check the main path variables
 
     print("\n");
@@ -327,44 +331,45 @@ class Service
     {
         while (true)
         {
-            Result_file_path = Project_path/Result_file;
-            Result_file_path_1 = Project_path/Result_file_1;
-            Result_file_path_2 = Project_path/Result_file_2;
-            Result_folder_path = Project_path/Result_folder;
-            Ghost_file_path_1 = Project_path/Ghost_file_1;
-            Ghost_file_path_2 = Project_path/Ghost_file_2;
-            Ghost_file_path = Project_path/Ghost_file;
-            uff::fsp First_path = Project_path/First_compared_element;
-            uff::fsp Second_path = Project_path/Second_compared_element;
-            vec<uff::fsp> Victims_for_removing = {Result_file_path_1, Result_file_path,
+            Result_file_path = Project_path + "/" + Result_file;
+            Result_file_path_1 = Project_path + "/" + Result_file_1;
+            Result_file_path_2 = Project_path + "/" + Result_file_2;
+            Result_folder_path = Project_path + "/" + Result_folder;
+            Ghost_file_path_1 = Project_path + "/" + Ghost_file_1;
+            Ghost_file_path_2 = Project_path + "/" + Ghost_file_2;
+            Ghost_file_path = Project_path + "/" + Ghost_file;
+            str First_path = Project_path + "/" + First_compared_element;
+            str Second_path = Project_path + "/" + Second_compared_element;
+            vec<str> Victims_for_removing = {Result_file_path_1, Result_file_path,
                                             Result_file_path_2, Result_folder_path,
                                             Ghost_file_path_1, Ghost_file_path_2, Ghost_file_path,
                                             First_path, Second_path};
 
-            print("Do you want to clear to full \"" + Project_path.string() + "\" from rubbish?");
+            print("Do you want to clear to full \"" + Project_path + "\" from rubbish?");
             print("[0] No");
             print("[Other] Yes");
 
             if (input() != "0")
             {
                 bool b = false;
-                for (const uff::fsp & victim : Victims_for_removing) {
-                    uff::removing(victim);
-                    if (uff::there_is(victim))
-                    {
+                for (const str& victim : Victims_for_removing) 
+                {
+                    ufs::remove(victim);
+                    if (ufs::there_is(victim)) {
                         b = true;
-                        print("I can not delete \"" + victim.string() + "\"");
+                        print("I can not delete \"" + victim + "\"");
                     }
                 }
-                if (b) continue;
+                if (b)
+                    continue;
             }
             else 
             {
-                for (const uff::fsp &victim : Victims_for_removing)
+                for (const str &victim : Victims_for_removing)
                 {
-                    while (uff::there_is(victim))
+                    while (ufs::there_is(victim))
                     {
-                        str q = "Can I remove \"" + victim.string() + "\"? I don't need it. It can let me!";
+                        str q = "Can I remove \"" + victim + "\"? I don't need it. It can let me!";
                         str v0 = "[#] No and I move it to other folder";
                         str v1 = "[Other] Yeah";
 
@@ -382,15 +387,15 @@ class Service
                             str v = input();
                         }
 
-                        uff::removing(victim);
-                        if (uff::there_is(victim))
+                        ufs::remove(victim);
+                        if (ufs::there_is(victim))
                         {
                             print("I cannot remove it. If you don't fix the problem or you don't move it to other folder, \nI break the running!");
                             str q666 = "Are you ready? [Something]: ";
                             print(q666, 0);
                             str v = input();
 
-                            if (uff::there_is(victim))
+                            if (ufs::there_is(victim))
                             {
                                 print("I said you");
                                 str fuck_break_135 = "THE RUNNING IS BROKEN BY PROGRAM, BECAUSE IT WAS OFFERED BY USER!";
@@ -406,7 +411,7 @@ class Service
             
             break;
         }
-        return true;
+        return 1;
     }
 
 
@@ -415,18 +420,18 @@ class Service
     {
         while (true)
         {
-            For_comparator_path = Project_path/For_comparator;
+            For_comparator_path = Project_path + "/" + For_comparator;
 
-            while (!uff::is_dir(For_comparator_path)) // Fix problem with the folder For_Comparator
+            while (!ufs::is_dir(For_comparator_path)) // Fix problem with the folder For_Comparator
             {
                 str q = "Can I create it?";
                 str v0 = "[#] No and CANCEL THE WAY";
                 str v1 = "[Other] Yes";
-                str text = "The folder \"" + For_comparator.string() + "\" in \"" + In_this_paths.string() + "\" was not created by me!";
+                str text = "The folder \"" + For_comparator + "\" in \"" + In_this_paths + "\" was not created by me!";
 
-                if (uff::there_is(For_comparator_path))
+                if (ufs::there_is(For_comparator_path))
                 {
-                    text = "Folder \"" + For_comparator.string() + "\" in " + In_this_paths.string() + " is not folder!";
+                    text = "Folder \"" + For_comparator + "\" in " + In_this_paths + " is not folder!";
                     q = "Can I recreate it to folder? \n(If this file is important for you, you should move to other directory)";
                 }
 
@@ -438,28 +443,28 @@ class Service
                 if (input() == "#")
                     return false;
 
-                if (uff::there_is(For_comparator_path))
+                if (ufs::there_is(For_comparator_path))
                 {
-                    uff::removing(For_comparator_path);
-                    if (uff::there_is(For_comparator_path))
+                    ufs::remove(For_comparator_path);
+                    if (ufs::there_is(For_comparator_path))
                     {
-                        print("I cannot remove \"" + For_comparator_path.string() + "\"");
+                        print("I cannot remove it");
                         continue;
                     }
                 }
 
-                if (!uff::there_is(For_comparator_path))
+                if (!ufs::there_is(For_comparator_path))
                 {
-                    if (!uff::make_dir(For_comparator_path))
+                    if (!ufs::make_dir(For_comparator_path))
                         continue;
-                    if (uff::there_is(For_comparator_path))
+                    if (ufs::there_is(For_comparator_path))
                         break;
                 }
             }
 
-            while (uff::count_of_in_dir(For_comparator_path) != 2) // Fix problem with number of folder, if there is more 2 files or less
+            while (ufs::count_of_in_dir(For_comparator_path) != 2) // Fix problem with number of folder, if there is more 2 files or less
             {
-                str text = "The folder \"" + For_comparator.string() + "\" must contain exactly 2 elements for comparison, not " + to_str(uff::count_of_in_dir(For_comparator_path)) + " elements!";
+                str text = "The folder \"" + For_comparator + "\" must contain exactly 2 elements for comparison, not " + to_str(ufs::count_of_in_dir(For_comparator_path)) + " elements!";
                 str q = "You have to correct your sins";
                 str v0 = "[#] No and CANCEL THE WAY!";
                 str v1 = "[Other] Yes";
@@ -473,11 +478,11 @@ class Service
 
             while (true) // Take OBJECT_1 and OBJECT_2 in the folder For_comparator_path
             {
-                vec<uff::fsp> OBJECTS_in_service = uff::in_dir(For_comparator_path); // ./For_comparator/[OBJECT1]     and     ./For_comparator/[OBJECT2]
+                vec<str> OBJECTS_in_service = ufs::in_dir(For_comparator_path); // ./For_comparator/[OBJECT1]     and     ./For_comparator/[OBJECT2]
                 OBJECT_1 = OBJECTS_in_service[0];                         // FIRST ELEMENT
                 OBJECT_2 = OBJECTS_in_service[1];                         // SECOND ELEMENT
 
-                str text1 = "The first element is \"" + OBJECT_1.string() + "\" and the second element is \"" + OBJECT_2.string() + "\".";
+                str text1 = "The first element is \"" + OBJECT_1 + "\" and the second element is \"" + OBJECT_2 + "\".";
                 str q = "Right?";
                 str v0 = "[#] No and CANCEL THE WAY!";
                 str v1 = "[0] No and I change elements";
@@ -511,9 +516,9 @@ class Service
         while (true)
         {
 
-            OBJ__1 = Project_path/OBJ_1;
-            OBJ__2 = Project_path/OBJ_2;
-            bool b = !uff::is_text_file(OBJ__1) || !uff::is_text_file(OBJ__2);
+            OBJ__1 = Project_path + "/" + OBJ_1;
+            OBJ__2 = Project_path + "/" + OBJ_2;
+            bool b = !ufs::is_text_file(OBJ__1) || !ufs::is_text_file(OBJ__2);
             while (b) // You input data or create text files alone
             {
                 str q = "Are you ready to write data (paths)?";
@@ -533,12 +538,12 @@ class Service
 
                 while (v == "0") // You create text files alone
                 {
-                    if (!uff::there_is(OBJ__1))
+                    if (!ufs::there_is(OBJ__1))
                         write("", OBJ__1);
-                    if (!uff::there_is(OBJ__2))
+                    if (!ufs::there_is(OBJ__2))
                         write("", OBJ__2);
 
-                    str text = "OK, I will wait until you write or rewrite the paths in \"" + OBJ_1.string() + "\" and \"" + OBJ_2.string() + "\".";
+                    str text = "OK, I will wait until you write or rewrite the paths in \"" + OBJ_1 + "\" and \"" + OBJ_2 + "\".";
                     q = "Are you ready?";
                     v1 = "[0] My paths have already had changing and my paths have only English text";
 
@@ -561,7 +566,7 @@ class Service
 
                         OBJECT_2 = read(OBJ__2);
 
-                        text = "Your elements are \"" + OBJECT_1.string() + "\" and \"" + OBJECT_2.string() + "\".";
+                        text = "Your elements are \"" + OBJECT_1 + "\" and \"" + OBJECT_2 + "\".";
                         q = "Right?";
 
                         v1 = "[0] No and I REWRITE PATH";
@@ -586,26 +591,26 @@ class Service
 
                 if (v != "0" && v != "#") // System create text files
                 {
-                    while ((uff::there_is(OBJ__1) && !uff::is_text_file(OBJ__1)) || (uff::there_is(OBJ__2) && !uff::is_text_file(OBJ__2))) // Removing notext files: OBJ__1 and OBJ__2
+                    while ((ufs::there_is(OBJ__1) && !ufs::is_text_file(OBJ__1)) || (ufs::there_is(OBJ__2) && !ufs::is_text_file(OBJ__2))) // Removing notext files: OBJ__1 and OBJ__2
                     {
                         str text = "I remove your ";
                         str text1 = "it is";
                         str text2;
-                        if (uff::there_is(OBJ__1))
+                        if (ufs::there_is(OBJ__1))
                         {
-                            text += "\"" + OBJ__1.string() + "\"";
+                            text += "\"" + OBJ__1 + "\"";
                         }
-                        if (uff::there_is(OBJ__1) && uff::there_is(OBJ__2))
+                        if (ufs::there_is(OBJ__1) && ufs::there_is(OBJ__2))
                         {
                             text += " and ";
                             text1 = "they are";
                             text2 = "s";
                         }
-                        if (uff::there_is(OBJ__2))
+                        if (ufs::there_is(OBJ__2))
                         {
-                            text += "\"" + OBJ__2.string() + "\"";
+                            text += "\"" + OBJ__2 + "\"";
                         }
-                        text += " because " + text1 + " not a text file"+text2+".";
+                        text += " because " + text1 + " not a text file.";
                         q = "OK?";
                         v0 = "[#] No and CANCEL THE WAY!";
                         v1 = "[0] No and I change the file" + text2 + " or remove the file" + text2 + " alone";
@@ -627,12 +632,12 @@ class Service
                                 return false;
                             continue;
                         }
-                        while (!uff::is_text_file(OBJ__1)) // Remove OBJ__1
+                        while (!ufs::is_text_file(OBJ__1)) // Remove OBJ__1
                         {
-                            uff::removing(OBJ__1);
-                            if (uff::there_is(OBJ__1))
+                            ufs::remove(OBJ__1);
+                            if (ufs::there_is(OBJ__1))
                             {
-                                text = "I can not remove \"" + OBJ__1.string() + "\". Can you remove alone?";
+                                text = "I can not remove \"" + OBJ__1 + "\". Can you remove alone?";
                                 print(text);
                                 print(v0);
                                 print(v1);
@@ -641,12 +646,12 @@ class Service
                                 continue;
                             }
                         }
-                        while (!uff::is_text_file(OBJ__2)) // Remove OBJ__2
+                        while (!ufs::is_text_file(OBJ__2)) // Remove OBJ__2
                         {
-                            uff::removing(OBJ__2);
-                            if (uff::there_is(OBJ__2))
+                            ufs::remove(OBJ__2);
+                            if (ufs::there_is(OBJ__2))
                             {
-                                text = "I can not remove \"" + OBJ__2.string() + "\". Can you remove alone?";
+                                text = "I can not remove \"" + OBJ__2 + "\". Can you remove alone?";
                                 print(text);
                                 print(v0);
                                 print(v1);
@@ -659,16 +664,16 @@ class Service
 
                     while (true) //  Input OBJECT_1 and OBJECT_2
                     {
-                        if (!uff::there_is(OBJ__1))
+                        if (!ufs::there_is(OBJ__1))
                             OBJECT_1 = input("What is your First element?: ");
                         else
                             OBJECT_1 = read(OBJ__1);
-                        if (!uff::there_is(OBJ__2))
+                        if (!ufs::there_is(OBJ__2))
                             OBJECT_2 = input("What is your Second element?: ");
                         else
                             OBJECT_2 = read(OBJ__2);
 
-                        str text = "Your elements are \"" + OBJECT_1.string() + "\" and \"" + OBJECT_2.string() + "\".";
+                        str text = "Your elements are \"" + OBJECT_1 + "\" and \"" + OBJECT_2 + "\".";
                         q = "Right?";
                         v0 = "[#] No and CANCEL THE WAY";
                         v1 = "[0] No and REWRITE PATHS";
@@ -699,7 +704,7 @@ class Service
                 OBJECT_1 = read(OBJ__1);
                 OBJECT_2 = read(OBJ__2);
 
-                str text = "The elements for comparison are \"" + OBJECT_1.string() + "\" and \"" + OBJECT_2.string() + "\".";
+                str text = "The elements for comparison are \"" + OBJECT_1 + "\" and \"" + OBJECT_2 + "\".";
                 str q = "Right?";
                 str v0 = "[#] No and CANCEL THE WAY!";
                 str v1 = "[0] No and I change the elements";
@@ -730,7 +735,7 @@ class Service
         }
     }
 
-    bool five(const uff::fsp& path) // You have two ways of taking OBJECT_1 and OBJECT_2
+    bool five(str path) // You have two ways of taking OBJECT_1 and OBJECT_2
     {
         if (path == In_this_paths__path)
             return five_1();
@@ -740,14 +745,14 @@ class Service
             return false;
     }
 
-    bool four_1(const uff::fsp &path) // You create a new folder in In_(other, this)_path
+    bool four_1(str path) // You create a new folder in In_(other, this)_path
     { 
         while (true)
         {
-            str r = random_string_each(15, uff::dangerous_chars, 0, '_');
-            if (uff::there_is_FOF(r, path))
+            str r = random_string_each(15, ufs::dangerous_chars, 0, '_');
+            if (ufs::there_is_FOF(r, path))
                 continue;
-            str text = "I create folder with name \"" + r + "\" in \"" + path.string() + "\"";
+            str text = "I create folder with name \"" + r + "\" in \"" + path + "\"";
             str text1 = "Do you want to rename the folder?";
             str v0 = "[#] CANCEL";
             str v1 = "[1] No";
@@ -779,7 +784,7 @@ class Service
                     for (const char &check_dangerous_char : n)
                     {
                         bool dangerous = false;
-                        for (const char &dangerous_char : uff::dangerous_chars)
+                        for (const char &dangerous_char : ufs::dangerous_chars)
                         {
                             // std::cout << "D" << dangerous_char << "D" << std::endl; // rubbish
                             if (dangerous_char == check_dangerous_char)
@@ -798,7 +803,7 @@ class Service
                     if (coll_dangerous_char > 0)
                         n = n2;
 
-                    if (uff::there_is_FOF(n, path))
+                    if (ufs::there_is_FOF(n, path))
                     {
                         str text4 = "The folder with name \"" + n + "\" is already created. \nChoose other name!";
                         print(text4);
@@ -807,15 +812,16 @@ class Service
                     }
                 }
 
-                uff::fsp name = path/n;
-                if (!uff::make_dir(name)) continue;
-                if (uff::there_is(name))
+                str name = path + "/" + n;
+                if (!ufs::make_dir(name))
+                    continue;
+                if (ufs::there_is(name))
                 {
                     Project_path = name;
                     if (path == In_this_paths__path)
                     {
-                        For_comparator_path = Project_path/For_comparator;
-                        if (!uff::make_dir(For_comparator_path))
+                        For_comparator_path = Project_path + "/" + For_comparator;
+                        if (!ufs::make_dir(For_comparator_path))
                             continue;
                     }
 
@@ -829,7 +835,7 @@ class Service
         }
     }
 
-    bool four(const uff::fsp &path)
+    bool four(str path)
     { // If In_(other, this)_path is empty, \
                         create folder. For exemple: project_exemple or you choose name.\
                         If In_(other, this)_path is not empty, you choose folder for comparing \
@@ -837,7 +843,7 @@ class Service
                         \
                         the method is key of break in loop inmethod "two"
 
-        if (uff::empty(path))
+        if (empty(path))
         {
             if (!four_1(path))
                 return false;
@@ -845,7 +851,7 @@ class Service
         }
         else
         {
-            vec<uff::fsp> containings = uff::in_dir(path);
+            vec<str> containings = ufs::in_dir(path);
 
             str vs = "[Other] CREATE A NEW";
             str v0 = "[#] CANCEL AND BACK";
@@ -855,10 +861,10 @@ class Service
             vec<str> containings_vec_str;
 
             int n_containing = 0;
-            for (const uff::fsp &containing : containings) // You take PATHS from in_dir(path)
+            for (const str &containing : containings) // You take PATHS from in_dir(path)
             {
-                str vn = "[" + to_str(n_containing) + "] " + containing.filename().string(); // [0] Name_file
-                containings_vec_str.push_back(containing.filename().string());
+                str vn = "[" + to_str(n_containing) + "] " + ufs::FOF_without_path(containing); // [0] Name_file
+                containings_vec_str.push_back(ufs::FOF_without_path(containing));
                 print(vn);
                 n_containing++;
             }
@@ -884,7 +890,7 @@ class Service
                 return false;
             else if (condition_containing)
             {
-                Project_path = path/chosen_v_file;
+                Project_path = path + "/" + chosen_v_file;
                 return true;
             }
             else // If you chose [Other]
@@ -892,16 +898,16 @@ class Service
         }
     }
 
-    bool three_1(const uff::fsp &path) // It create or recreate "In_other_paths__path" and "In_this_paths__path"
+    bool three_1(str path) // It create or recreate "In_other_paths__path" and "In_this_paths__path"
     {
         while (true) {
 
-            while (!uff::is_dir(path))
+            while (!ufs::is_dir(path))
             {
                 //str text = "Folder \"" + path + "\" in \"" + Comparator + "\" is not created by me!";
-                if (uff::there_is(path))
+                if (ufs::there_is(path))
                 {
-                    str text = "The folder \"" + path.string() + "\" in " + Comparator.string() + " is not folder!";
+                    str text = "The folder \"" + path + "\" in " + Comparator + " is not folder!";
                     str q = "Can I recreate it to folder? /n(If this file is important for you, you should move to other directory)";
                     str v0 = "[#] No";
                     str v1 = "[Other] Yes";
@@ -916,36 +922,36 @@ class Service
                         return false;
                 }
 
-                if (uff::there_is(path)) // I don't create variable bools because I wart give user time for move undirectory
+                if (ufs::there_is(path)) // I don't create variable bools because I wart give user time for move undirectory
                 {
-                    uff::removing(path);
+                    ufs::remove(path);
                     print("I cannot remove it");
                     continue;
                 }
-                if (!uff::there_is(path))
+                if (!ufs::there_is(path))
                 {
-                    if (!uff::make_dir(path))
+                    if (!ufs::make_dir(path))
                         continue;
-                    if (uff::there_is(path))
+                    if (ufs::there_is(path))
                         break;
                 }
             }
-            if (uff::is_dir(path))
+            if (ufs::is_dir(path))
                 return true;
         }
     }
 
-    bool three(const uff::fsp &variant_of_answer) // It create or recreate "In_other_paths__path" and "In_this_paths__path"
+    bool three(str variant_of_answer) // It create or recreate "In_other_paths__path" and "In_this_paths__path"
     {
 
         if (variant_of_answer == "1")
         {
-            In_this_paths__path = Comparator_path/In_this_paths;
+            In_this_paths__path = Comparator_path + "/" + In_this_paths;
             return three_1(In_this_paths__path);
         }
         if (variant_of_answer == "2")
         {
-            In_other_paths__path = Comparator_path/In_other_paths;
+            In_other_paths__path = Comparator_path + "/" + In_other_paths;
             return three_1(In_other_paths__path);
         }
         else
@@ -955,7 +961,7 @@ class Service
     bool two() // You choose where system compare your files/folders
     {
         str text = "Where should I compare your files/folders/etc?";
-        str v1 = "[1] In folder \"" + Comparator.string() + "\" and I move elements inside the folder";
+        str v1 = "[1] In folder \"" + Comparator + "\" and I move elements inside the folder";
         str v2 = "[2] I show you the way with my written path";
         str v0 = "[#] BREAK THE RUNNING";
 
@@ -1006,15 +1012,15 @@ class Service
 
     bool one() // It create or recreate a folder "Comparator" and write Informaiton.txt in the folder
     {
-        Comparator_path = PATH/Comparator;
-        while (!uff::is_dir(Comparator_path))
+        Comparator_path = PATH + "/" + Comparator;
+        while (!ufs::is_dir(Comparator_path))
         {
-            str text = "Folder \"" + Comparator.string() + "\" in \"" + PATH.string() + "\" is not created by me";
+            str text = "Folder \"" + Comparator + "\" in \"" + PATH + "\" is not created by me";
             str q = "Can I create it?";
 
-            if (uff::there_is(Comparator_path))
+            if (ufs::there_is(Comparator_path))
             {
-                text = "\"" + Comparator.string() + "\" is not folder";
+                text = "\"" + Comparator + "\" is not folder";
                 q = "Can I recreate it to folder? \n(If this file is important for you, you should move to other directory)";
             }
 
@@ -1027,19 +1033,19 @@ class Service
             if (input(a) == "#")
                 return break_program();
 
-            if (uff::there_is(Comparator_path)) // I don't create variable bools because I want give user time for move undirectory
-                uff::removing(Comparator_path);
-            if (!uff::there_is(Comparator_path))
+            if (ufs::there_is(Comparator_path)) // I don't create variable bools because I want give user time for move undirectory
+                ufs::remove(Comparator_path);
+            if (!ufs::there_is(Comparator_path))
             {
-                In_other_paths__path = Comparator_path/In_other_paths;
-                In_this_paths__path = Comparator_path/In_this_paths;
-                if (!uff::make_dir(Comparator_path))
+                In_other_paths__path = Comparator_path + "/" + In_other_paths;
+                In_this_paths__path = Comparator_path + "/" + In_this_paths;
+                if (!ufs::make_dir(Comparator_path))
                     continue;
 
-                if (uff::there_is(Comparator_path))
+                if (ufs::there_is(Comparator_path))
                 {
-                    if (!uff::make_dir(In_other_paths__path)) continue;
-                    if (!uff::make_dir(In_this_paths__path)) continue;
+                    if (!ufs::make_dir(In_other_paths__path)) continue;
+                    if (!ufs::make_dir(In_this_paths__path)) continue;
                     break;
                 }
             }
@@ -1047,22 +1053,22 @@ class Service
 
         // Informaiton
 
-        Information_for_Using_path = Comparator_path/Information_for_Using;
+        Information_for_Using_path = Comparator_path + "/" + Information_for_Using;
         str Information_for_Using_text_is_read = read(Information_for_Using_path);
         str Information_for_Using_text = Information_for_Using_text_function(
-            Comparator.string(), In_other_paths.string(), In_this_paths.string(),
-            OBJ_1.string(), OBJ_2.string(), For_comparator.string(), Result_file_1.string(), 
-            Result_file_2.string(), Result_file.string(), Ghost_file_1.string(), Ghost_file_2.string(), 
-            Ghost_file.string(), Result_folder.string(), First_compared_element.string(),
-            Second_compared_element.string(), Where_is_this_file.string(),
-            Where_is_this_file_alt.string(), Information_for_Using.string());
+            Comparator, In_other_paths, In_this_paths,
+            OBJ_1, OBJ_2, For_comparator, Result_file_1, Result_file_2,
+            Result_file, Ghost_file_1, Ghost_file_2, Ghost_file,
+            Result_folder, First_compared_element,
+            Second_compared_element, Where_is_this_file,
+            Where_is_this_file_alt, Information_for_Using);
 
         bool b = Information_for_Using_text_is_read == Information_for_Using_text;
 
-        while (!uff::is_text_file(Information_for_Using_path) || !b)
+        while (!ufs::is_text_file(Information_for_Using_path) || !b)
         {
 
-            str text = !uff::is_text_file(Information_for_Using_path) ? "an" : "to update the";
+            str text = !ufs::is_text_file(Information_for_Using_path) ? "an" : "to update the";
             print("Do you need " + text + " information of using the program?");
             print("[#] No");
             print("[Other] Yeah [RECOMMENDED]");
@@ -1070,25 +1076,25 @@ class Service
             if (input() != "#")
             {
 
-                while (uff::there_is(Information_for_Using_path) && !uff::is_text_file(Information_for_Using_path)) // Removing Information.txt
+                while (ufs::there_is(Information_for_Using_path) && !ufs::is_text_file(Information_for_Using_path)) // Removing Information.txt
                 {
-                    print("I remove the " + Information_for_Using.string() + " in \"" + Comparator_path.string() + "\". It can let me. If the notext file is important for you, you move the file in other directories\nCan I remove it?");
-                    print("[#] No and I don't want to get " + Information_for_Using.string() + " more");
+                    print("I remove the " + Information_for_Using + " in \"" + Comparator_path + "\". It can let me. If the notext file is important for you, you move the file in other directories\nCan I remove it?");
+                    print("[#] No and I don't want to get " + Information_for_Using + " more");
                     print("[Other] Yeah");
 
                     if (input() != "#")
                     {
-                        uff::removing(Information_for_Using_path);
-                        if (uff::there_is(Information_for_Using_path))
+                        ufs::remove(Information_for_Using_path);
+                        if (ufs::there_is(Information_for_Using_path))
                         {
-                            print("I can not remove " + Information_for_Using.string() + ".");
+                            print("I can not remove " + Information_for_Using + ".");
                             // break;        // I would not put the code. Because: If System can't remove file => break, Else not break
                         }
                     }
                     break;
                 }
 
-                while (!uff::there_is(Information_for_Using_path) || !b) // Writing Informations
+                while (!ufs::there_is(Information_for_Using_path) || !b) // Writing Informations
                 {
                     write(Information_for_Using_text, Information_for_Using_path, 0);
                     Information_for_Using_text = space;
@@ -1105,7 +1111,8 @@ public:
     bool service_start()
     {
         if (!one()) return 0;
-        str error_in_equal = "THE FIRST ELEMENT \"" + OBJECT_1.string() + "\" AND THE SECOND ELEMENT \"" + OBJECT_2.string() + "\" ARE EQUAL! THERE IS NO POINT IN COMPARING ELEMENTS!";
+        str error_in_equal = "THE FIRST ELEMENT \"" + OBJECT_1 + "\" AND THE SECOND ELEMENT \"" 
+            + OBJECT_2 + "\" ARE EQUAL! THERE IS NO POINT IN COMPARING ELEMENTS!";
         if (OBJECT_1 == OBJECT_2)
             return break_program(error_in_equal);
         OBJECTS = {OBJECT_1, OBJECT_2};   

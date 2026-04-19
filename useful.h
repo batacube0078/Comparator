@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <stdexcept> // for std::runtime_error()
@@ -7,13 +8,10 @@
 // string
 using str = std::string;
 
-//  vectors
-using vec_str = std::vector<str>;
-using vec_int = std::vector<int>;
-using vec_char = std::vector<char>;
-using vec_bool = std::vector<bool>;
-using vec_double = std::vector<double>;
-using vec_float = std::vector<float>;
+//  vector
+template <typename T>
+using vec = std::vector<T>;
+
 
 
 // ERRORS
@@ -24,44 +22,53 @@ str er_mk = "\n      ERROR: I CAN NOT CREATE FOLDER!";
 str er_open = "\n       ERROR: I CAN NOT OPEN THE FILE!";
 // Useful
 str space;               // This is always empty. Use and don't touch !!!
-vec_char vec_space_char; // This is always empty. Use and don't touch !!!
+vec<char> vec_space_char; // This is always empty. Use and don't touch !!!
 // for answer
 str a = "===> ";
 //////////////////////////////////////////
-void print(const vec_str &texts, bool b = 1, bool b1 = 1)
+
+void print(const vec<str> &texts, const bool &  enter = true, const bool &  flush = false)
 {
-    if (b1)
+    if (flush)
         std::cout << "{ " << std::flush;
     else
         std::cout << "{ ";
     for (const str &text : texts)
     {
-        if (b1)
+        if (flush)
             std::cout << "\"" << text << "\"," << std::flush;
         else
             std::cout << "\"" << text << "\",";
     }
-    if (b1)
+    if (flush)
         std::cout << " }" << std::flush;
     else
         std::cout << " }";
-    if (b)
+    if (enter)
         std::cout << std::endl;
 }
 
 template <typename T>
-void print(const T &text, bool b = 1, bool b1 = 1)
+void print(const T &text, const bool &enter = true, const bool &flush = false)
 {
-    if (b1)
+    if (flush)
         std::cout << text  << std::flush;
     else 
-        std::cout << text/* << std::flush*/;
+        std::cout << text;
 
-    if (b)
+    if (enter)
         std::cout << std::endl;
 }
 
-str input(str text = a)
+template <typename T>
+void DEBUGGER(const T& text, const bool& b = true)
+{
+    if (b) {
+        print(text);
+    }
+}
+
+str input(const str& text = a)
 {
     print(text, 0);
     str text_out;
@@ -70,24 +77,24 @@ str input(str text = a)
     return text_out;
 }
 
-str to_str(char c) 
+str to_str(const char& c) 
 {
     str result;
     result.push_back(c);
     return result;
 }
 
-str to_str(vec_char C) 
+str to_str(const vec<char>& C) 
 {
     str result;
-    for (char c : C) {
+    for (const char& c : C) {
         result.push_back(c);
     }
     return result;
 }
 
 template <typename T>
-str to_str(T v)
+str to_str(const T& v)
 {
     return std::to_string(v);
 }
@@ -106,27 +113,17 @@ bool inside(const T& ELEMENT, const std::vector<T> &ARRAY)     //  9 in array wi
 }
 
 
-vec_str mirror_str(const vec_str& usual) //  {1, 2, 3, 4, 5} ==> {5, 4, 3, 2, 1}
-{
-    vec_str result;
 
-    for (int i = 0; i < usual.size(); i++) 
-    {
-        result.push_back(usual[usual.size() - 1 - i]);
-    }
-    return result;
+template <typename T>
+vec<T> mirror_copy(vec<T> vector) {
+    std::reverse(vector.begin(), vector.end());
+    return vector;
+}
+template <typename T>
+void mirror(vec<T>& vector) {
+    reverse(vector.begin(), vector.end());
 }
 
-vec_int mirror_int(const vec_int& usual)
-{
-    vec_int result;
-
-    for (int i = 0; i < usual.size(); i++)
-    {
-        result.push_back(usual[usual.size() - 1 - i]);
-    }
-    return result;
-}
 
 
 
@@ -137,13 +134,13 @@ bool break_program(const str& text = "THE RUNNING IS BROKEN")
     //throw std::runtime_error(text);
     print(text);
     str message_and = "\n\n\n\n\n\n\n\n\n\n\nWRITE SOMETHING FOR CLOSING THE PROGRAM: ";
-    str rubbish_end = input(message_and);
+    input(message_and);
 
     return 0;
 }
 
 
-str join (vec_str array_str, char c = 0) 
+str join (const vec<str>& array_str, const char& c = 0) 
 {
     str result;
 
@@ -159,9 +156,9 @@ str join (vec_str array_str, char c = 0)
 
 
 
-vec_str split(const str& text, const vec_char& C = vec_space_char)   // "C" this is vector of characters, "c" this is character
+vec<str> split(const str& text, const vec<char>& C = vec_space_char)   // "C" this is vector of characters, "c" this is character
 {
-    vec_str array;
+    vec<str> array;
     str element;
 
     if (C != vec_space_char) {
@@ -188,12 +185,12 @@ vec_str split(const str& text, const vec_char& C = vec_space_char)   // "C" this
 }
 
 
-vec_str split(str text, char c)
+vec<str> split(const str& text, const char& c)
 {
-    vec_str result;
+    vec<str> result;
     str element;
     if (c != 0) {
-        for (char el : text) 
+        for (const char& el : text) 
         {
             if (el == c) {
                 result.push_back(element);

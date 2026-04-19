@@ -3,38 +3,37 @@
 #include <filesystem>
 #include <fstream>
 
-namespace uff {
+namespace ufs {
 // Dangerous
 // "Dangerous" characters that must not be used in file names
 str dangerous_chars = "\\/:*?\"<>|";
 #ifdef _WIN32
     vec<char> cutter_characters = {'\\', '/'};
-#elif __APPLE__
+#elif __APPLE___
     vec<char> cutter_characters = {'/', ':'};
 #else
     vec<char> cutter_characters = {'/'};
 #endif
 
-
-// FS
 namespace fs = std::filesystem;
 using fsp = fs::path;
 using ferror = fs::filesystem_error;
 
 void print_er(const ferror &er, const str &message = "Error: ")
-{
-    std::cerr << message << er.what() << std::endl;
-    if (!er.path1().empty())
-        std::cerr << er.path1() << std::endl;
-    if (!er.path2().empty())
-        std::cerr << er.path2() << std::endl;
-}
+    {
+        std::cerr << message << er.what() << std::endl;
+        if (!er.path1().empty())
+            std::cerr << er.path1() << std::endl;
+        if (!er.path2().empty())
+            std::cerr << er.path2() << std::endl;
+    }
 
-bool there_is_FOF(const str &fof, const fsp &path) //  Is there element in folder
+bool there_is_FOF(const str &fof, const str &path) //  Is there element in folder
 {
     try {
-        
-        return fs::exists(path/fof);
+        str full = path + "/" + fof;
+        fs::path p(full);
+        return fs::exists(p);
     } catch (const ferror& er)
     {
         print_er(er);
@@ -42,34 +41,35 @@ bool there_is_FOF(const str &fof, const fsp &path) //  Is there element in folde
     }
 }
 
-bool there_is(const fsp &path) //  Is there path in your OC
+bool there_is(const str &path) //  Is there path in your OC
 {
     try
     {
         return fs::exists(path);
     }
-    catch(const ferror& er)
+    catch (const ferror& er)
     {
-        print_er(er, "ERROR: ");
+        print_er(er);
         return false;
     }
     
     
 }
 
-bool make_dir(const fsp& path)             // Create folder
+bool make_dir(const str& path)             // Create folder
 {
     if (!there_is(path))
     {
         std::error_code ec;
         try
         {
-            bool ok = fs::create_directory(path, ec);
+            fs::path p (path);
+            bool ok = fs::create_directory(p, ec);
 
             if (ec)
             {
-                print("      ERROR: ", 0);
-                print(ec);
+                //print("      ERROR: ", 0);
+                //print(ec);
                 return false;
             }
             else
@@ -82,9 +82,9 @@ bool make_dir(const fsp& path)             // Create folder
             }
             return true;
         }
-        catch (const ferror & er)
+        catch (const ferror& er)
         {
-            print_er(er, "ERROR: ");
+            print_er(er);
             print(er_mk);
             print(ec);
             return false;
@@ -93,51 +93,53 @@ bool make_dir(const fsp& path)             // Create folder
     else return true;
 }
 
-bool empty(const fsp &path) // Is this file empty?
+bool empty(const str &path) // Is this file empty?
 {
     return fs::is_empty(path);
 }
 
-fsp current()                   // Return your current path
+str current()                   // Return your current path
 {
-
     try
     {
-        fs::path file = fs::current_path();
-        return file;
+        fs::path p = fs::current_path();
+        return p.string();
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         print(er_cur);
-        return "";
+        return space;
     }
 }
 
-bool is_dir(const fsp &path) // Is this path directory
+bool is_dir(const str &path) // Is this path directory
 {
     try {
         if (there_is(path)) {
-            return fs::is_directory(path);
+            fs::path p(path);
+            if (fs::is_directory(p))
+                return true;
         }
         return false;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
     }
 }
 
-bool is_reg(const fsp &path) // Is this path regular
+bool is_reg(const str &path) // Is this path regular
 {
     try {
         if (there_is(path)) {
-            return fs::is_regular_file(path);
+            fs::path p (path);
+            if (fs::is_regular_file(p)) return true;
         }
         return false;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
@@ -145,14 +147,15 @@ bool is_reg(const fsp &path) // Is this path regular
     
 }
 
-bool is_binary_file(const fsp &path) // Is this path binary file?
+bool is_binary_file(const str &path) // Is this path binary file?
 {
     try
     {
+        fs::path p(path);
         if (!is_reg(path))
             return false;
 
-        std::ifstream file(path, std::ios::binary);
+        std::ifstream file(p, std::ios::binary);
         if (!file.is_open())
             return false;
 
@@ -172,12 +175,12 @@ bool is_binary_file(const fsp &path) // Is this path binary file?
         return ratio > 0.0; // >0% of spacial characters ==> binary file
     }
     catch (const std::exception &e)
-    {   
+    {
         return false;
     }
 }
 
-bool is_text_file(const fsp &path) // Is this a text file?
+bool is_text_file(const str &path) // Is this a text file?
 {
     try {
         if (!is_reg(path))
@@ -187,7 +190,8 @@ bool is_text_file(const fsp &path) // Is this a text file?
             return false;
 
 
-        std::ifstream file (path);
+        fs::path p (path);
+        std::ifstream file (p);
         if (!file.is_open())
         {
             print(er_open);
@@ -197,54 +201,57 @@ bool is_text_file(const fsp &path) // Is this a text file?
 
         return true;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
     }
 }
 
-bool is_slk(const fsp &path) // Is this path symlink
+bool is_slk(const str &path) // Is this path symlink
 {
     try {
         if (there_is(path)) {
-            if (fs::is_symlink(path)) return true;
+            fs::path p (path);
+            if (fs::is_symlink(p)) return true;
         }
         return false;
     } 
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
     }
 }
 
-bool is_block(const fsp &path) // Is this path block
+bool is_block(const str &path) // Is this path block
 {
     try {
         if (there_is(path))
         {
-            return fs::is_block_file(path);
+            fs::path p (path);
+            return fs::is_block_file(p);
         }
         return false;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
     }
 }
 
-bool is_char_file(const fsp &path) // Is this path character file
+bool is_char_file(const str &path) // Is this path character file
 {
     try {
         if (there_is(path))
         {
-            return fs::is_character_file(path);
+            fs::path p (path);
+            return fs::is_character_file(p);
         }
         return false;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
@@ -252,67 +259,71 @@ bool is_char_file(const fsp &path) // Is this path character file
     
 }
 
-bool is_fifo_file(const fsp &path) // Is this path fifo
+bool is_fifo_file(const str &path) // Is this path fifo
 {
     try {
         if (there_is(path))
         {
-            return fs::is_fifo(path);
+            fs::path p (path);
+            return fs::is_fifo(p);
         }
         return false;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
     }
 }
 
-bool is_sock(const fsp &path)
+bool is_sock(const str &path)
 {
     try {
         if (there_is(path))
         {
-            return fs::is_socket(path);
+            fs::path p (path);
+            return fs::is_socket(p);
         }
         return false;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
     }
 }   
 
-bool is_unknown (const fsp& path)
+bool is_unknown (const str& path)
 {
     try {
         if (there_is(path))
         {
-            return fs::is_other(path);
+            fs::path p (path);
+            return fs::is_other(p);
         }
         return false;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return false;
     }
 }
 
-fsp read_target (const fsp& path)          // System read symlink's target 
+str read_target (const str& path)          // System read symlink's target 
 {
     try 
     {
         if (is_slk(path))
         {
-            fs::path result = fs::read_symlink(path);
+            fs::path p (path);
+            fs::path result = fs::read_symlink(p);
             
-            return result;
+            return result.string();
         }
         return space;
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         return space;
@@ -326,97 +337,97 @@ fsp read_target (const fsp& path)          // System read symlink's target
     if (there_is(path))
     {
         if (is_dir(path))
-            return 0;
+            return false;
         if (is_reg(path))
-            return 0;
+            return false;
         if (is_block(path))
-            return 0;
+            return false;
         if (is_slk(path))
-            return 0;
+            return false;
         if (is_char_file(path))
-            return 0;
+            return false;
         if (is_fifo_file(path))
-            return 0;
+            return false;
         if (is_sock(path))
-            return 0;
+            return false;
         if (is_unknown(path))
-            return 0;
+            return false;
         return 1;
     }
-    return 0;
+    return false;
 }*/
 
 
-vec<fsp> in_dir(const fsp &path)        // Input array which elements are full paths
+vec<str> in_dir(const str &path)        // Input array which elements are full paths
 {
-    vec<fsp> result_in_dir; // All containing
+    fs::path p(path);
+    vec<str> result_in_dir; // All containing
 
     if (!is_dir(path))
     { // If the path is not folder
-        print("        ERROR: PATH \"" + path.string() + "\" IS NOT FOLDER");
-
+        str text = "        ERROR: PATH \"" + path + "\" IS NOT FOLDER";
+        print(text);
         return result_in_dir;
     }
 
     try
     {
-        for (const auto &containing : fs::directory_iterator(path))
+        for (const auto &containing : fs::directory_iterator(p))
         {
-            fs::path containing_p = containing.path();
-            result_in_dir.push_back(containing_p); // Push containing in result_in_dir
+            fs::path containing_p = containing.path(); // I don't understand method "path()". Maybe it does variable in fs::path
+            str Containing = containing_p.string();    // Containing is string
+            result_in_dir.push_back(Containing);       // Push containing in result_in_dir
         }
 
         return result_in_dir;
     }
-    catch (const ferror & er) {
+    catch (const ferror& er) {
         print_er(er);
         return result_in_dir;
     }
 }   
 
-
-int count_of_in_dir(const fsp& path)      // number of elements in folder
+int count_of_in_dir(const str& path)      // number of elements in folder
 {
-    if (is_dir(path)) {
-        vec<fsp> elements_in_dir = in_dir(path);
-        return elements_in_dir.size();
-    }
+    if (is_dir(path))
+        return in_dir(path).size();
 
     return 0;
 }
 
 
-void removing(const fsp& path)       // delete file and folder
+void remove(const str& path)       // delete file and folder
 {
     try
     {
         if (there_is(path))
         {
+            fs::path p(path);
             if (!is_dir(path) || (is_dir(path) && empty(path)))
             {
-                fs::remove(path); // for files and empty folder
+                bool rubbish_1 = fs::remove(p); // for files and empty folder
             }
             else
             {
-                fs::remove_all(path);
+                std::uintmax_t rubbish_1 = fs::remove_all(p);
             }
         }
     }
-    catch (const ferror & er)
+    catch (const ferror& er)
     {
         print_er(er);
         print(er_del);
     }
 }
 
-/*str FOF_without_path(const str& path)      // For exemple: {"C:", "User", "Document", "Project"} ===> "Project"
+str FOF_without_path(const str& path)      // For exemple: {"C:", "User", "Document", "Project"} ===> "Project"
 { 
-    vec<str> split_path = split(path, cutter_characters);
-    return split_path[split_path.size() - 1];
-}*/
+    return fs::path(path).filename().string();
+}
 
 
-str What_is_type_of_file(const fsp& path) 
+
+str What_is_type_of_file(const str& path) 
 {
     if (there_is(path))
     {
@@ -434,10 +445,9 @@ str What_is_type_of_file(const fsp& path)
             return "FIFO";
         if (is_sock(path))
             return "SOCKET";
-        /*if (is_none_type_file(path))
-            return "NON-TYPE";*/
         return "UNKOWN-TYPE";
     }
     return "NOT-EXIST";
 }
+
 }
