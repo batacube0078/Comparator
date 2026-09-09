@@ -27,7 +27,7 @@ vec<char> vec_space_char; // This is always empty. Use and don't touch !!!
 str a = "===> ";
 //////////////////////////////////////////
 
-void print(const vec<str> &texts, const bool &  enter = true, const bool &  flush = false)
+void print(const vec<str> &texts, bool  enter = true, bool  flush = false)
 {
     if (flush)
         std::cout << "{ " << std::flush;
@@ -49,7 +49,7 @@ void print(const vec<str> &texts, const bool &  enter = true, const bool &  flus
 }
 
 template <typename T>
-void print(const T &text, const bool &enter = true, const bool &flush = false)
+void print(const T &text, bool enter = true, bool flush = false)
 {
     if (flush)
         std::cout << text  << std::flush;
@@ -61,7 +61,7 @@ void print(const T &text, const bool &enter = true, const bool &flush = false)
 }
 
 template <typename T>
-void DEBUGGER(const T& text, const bool& b = true)
+void DEBUGGER(const T& text, bool b = true)
 {
     if (b) {
         print(text);
@@ -77,7 +77,7 @@ str input(const str& text = a)
     return text_out;
 }
 
-str to_str(const char& c) 
+str to_str(char c) 
 {
     str result;
     result.push_back(c);
@@ -87,7 +87,7 @@ str to_str(const char& c)
 str to_str(const vec<char>& C) 
 {
     str result;
-    for (const char& c : C) {
+    for (char c : C) {
         result.push_back(c);
     }
     return result;
@@ -140,7 +140,7 @@ bool break_program(const str& text = "THE RUNNING IS BROKEN")
 }
 
 
-str join (const vec<str>& array_str, const char& c = 0) 
+str join (const vec<str>& array_str, char c = 0) 
 {
     str result;
 
@@ -162,7 +162,7 @@ vec<str> split(const str& text, const vec<char>& C = vec_space_char)   // "C" th
     str element;
 
     if (C != vec_space_char) {
-        for (const char & character : text)
+        for (char character : text)
         {
             if (inside(character, C)) {
                 array.push_back(element);
@@ -185,12 +185,12 @@ vec<str> split(const str& text, const vec<char>& C = vec_space_char)   // "C" th
 }
 
 
-vec<str> split(const str& text, const char& c)
+vec<str> split(const str& text, char c)
 {
     vec<str> result;
     str element;
     if (c != 0) {
-        for (const char& el : text) 
+        for (char el : text) 
         {
             if (el == c) {
                 result.push_back(element);

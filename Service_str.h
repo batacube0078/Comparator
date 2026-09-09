@@ -10,7 +10,7 @@ namespace srs {
 NEWS news;
 
 
-void write(const str& text, const str& path, const bool& b = 1) // Writes "text" to "path". If b is true, the system uses std::ios_base::app, otherwise it rewrites the file
+void write(const str& text, const str& path, bool b = true) // Writes "text" to "path". If b is true, the system uses std::ios_base::app, otherwise it rewrites the file
 {
     if (!b)
     {
@@ -30,7 +30,7 @@ void write(const str& text, const str& path, const bool& b = 1) // Writes "text"
     }
 }
 
-str read(const str& path, const bool& b = 1)      // If "b" is false, system use std::ios_base::binary
+str read(const str& path, bool b = true)      // If "b" is false, system use std::ios_base::binary
 {
     try
     {
@@ -781,10 +781,10 @@ class Service
                     str n2;
                     int coll_dangerous_char = 0;
 
-                    for (const char &check_dangerous_char : n)
+                    for (char check_dangerous_char : n)
                     {
                         bool dangerous = false;
-                        for (const char &dangerous_char : ufs::dangerous_chars)
+                        for (char dangerous_char : ufs::dangerous_chars)
                         {
                             // std::cout << "D" << dangerous_char << "D" << std::endl; // rubbish
                             if (dangerous_char == check_dangerous_char)

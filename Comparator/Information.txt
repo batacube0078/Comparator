@@ -1,0 +1,116 @@
+							ABOUT
+	This is a program called "Comparator". It is used to compare two files.
+I call these files "objects".
+
+							WHAT TYPES OF FILES CAN "Comparator" PROCESS?
+
+	The program can process existing files. It can work with the following file types: folders, regular files, and symlinks.
+However, it cannot process block devices, character devices, FIFOs, or sockets. This is because the developer used the <filesystem> library and did not know how to retrieve data from these file types.
+The developer could have included another library, but he was lazy.
+
+							WHAT OS CAN I USE?
+	If you use POSIX systems or macOS/Linux, you are lucky. Windows users can only check folders and regular files.
+Other file types are marked as unknown.
+If you use Windows, you must have Windows 8.1 or newer, because Windows 7 does not have a correct implementation of the <filesystem> library.
+
+							WHAT HAPPENS WHEN THE PROGRAM STARTS?
+	The program creates a text file called "Information.txt".
+This file contains information about how to use the program.
+After creating the text file, the program asks you to make a choice.
+If you choose "[1] In folder "Comparator" and move elements into the folder", the program creates a folder called "In_this_paths".
+If you choose "[2] I show you the path by writing it manually", the program creates a folder called "In_other_paths".
+After that, the program creates a folder called a "project".
+While the program is running, you can rename the project folder to any name you want.
+If you do not want the program to create too many projects, you can select an existing project during the program's execution.
+
+If your choice is the first option, the program creates a folder called "For_comparator".
+You must place two objects inside this folder for comparison.
+If your choice is the second option, you must manually specify the paths to the objects.
+The program creates two text files: "OBJECT_1.txt" and "OBJECT_2.txt", which contain the paths to your objects.
+	Be careful: if your object paths contain Cyrillic, Chinese, or other non-ASCII characters, you must write the paths manually in the files "OBJECT_1.txt" and "OBJECT_2.txt".
+Otherwise, the program may not be able to find the objects.
+
+After selecting the objects, the program cleans the project from previous comparison results.
+Then, the program allows you to configure new comparison settings.
+
+							WHY CAN SOME FILES EXIST FOR ME BUT NOT FOR THE PROGRAM?
+	Some files may be visible to you but not accessible to the program for the following reasons:
+	1. Unsupported encoding.
+	2. Security restrictions.
+	3. Symlinks without valid targets.
+	4. Invalid characters in file names.
+	5. Paths that are too long.
+	etc.
+
+							WHAT HAPPENS AFTER COMPARISON?
+After comparison, you may see the following result files:
+	The folder "Result_folder" contains files with different text lines, different sizes of regular files, or different symlink targets.
+This folder is created when both objects are folders.
+	The text files "Result_file_1.txt" and "Result_file_2.txt" contain differences in file types or data (size, text lines, targets, etc.).
+If the objects are equal, these files are not created. Instead, the program creates a file called "Result_file.txt" with text such as "THEY ARE EQUAL".
+	The text files "Ghost_files_1.txt" and "Ghost_files_2.txt" contain paths to files that do not exist.
+If both files do not exist, the program creates only "Ghost_files.txt".
+	The folders "#1_element" and "#2_element" contain different lines from your text objects.
+
+							STRUCT FOR EXEMPLE:
+
+	Comparator.exe
+	Comparator v
+		Information.txt
+		In_this_paths v
+			[Project_1] v
+				For_comparator v
+					[Object_1] 
+					[Object_2] 
+				Result_folder v
+					0.000001 v
+						#1_elementv
+							Where.txt
+							[Text-File]
+						#2_elementv
+							Where.txt
+							[Text-File]
+					0.000002 v
+						#1_elementv
+							Where.txt
+						#2_elementv
+							Where.txt
+					0.000003 >
+					0.000004 >
+					...
+			[Project_2] v
+				For_comparator v
+					[Object_1] 
+					[Object_2] 
+				Result_file.txt
+				Ghost_files.txt
+			[Project_3] >
+			[Project_4] >
+			[Project_5] >
+			...
+		In_other_paths v
+			[Project_1] v
+				OBJECT_1.txt
+				OBJECT_2.txt
+				Result_folder v
+					0.000001 v
+						#1_elementv
+							Where.txt
+							[Text-File]
+						#2_elementv
+							Where.txt
+							[Text-File]
+					0.000002 v
+						#1_elementv
+							Where.txt
+						#2_elementv
+							Where.txt
+					0.000003 >
+					0.000004 >
+					...
+			[Project_2] >
+			[Project_3] >
+			[Project_4] >
+			[Project_5] >
+			...
+

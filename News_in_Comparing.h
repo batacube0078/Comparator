@@ -46,43 +46,42 @@ class NEWS {
             }
         }
 
-        void Setting_for_output_news(const int &setting_message)
+        void Setting_for_output_news(int setting_message)
         {
-            int w = setting_message;
-            if (w == 1)
+            if (setting_message == 1)
             {
                 Setting_for_PRINT[0] = 1;
             }
-            else if (w == 2)
+            else if (setting_message == 2)
             {
                 Setting_for_PRINT[1] = 1;
             }
-            else if (w == 3)
+            else if (setting_message == 3)
             {
                 Setting_for_PRINT[2] = 1;
             }
-            else if (w == 4)
+            else if (setting_message == 4)
             {
                 Setting_for_PRINT[0] = 1;
                 Setting_for_PRINT[1] = 1;
             }
-            else if (w == 5)
+            else if (setting_message == 5)
             {
                 Setting_for_PRINT[2] = 1;
                 Setting_for_PRINT[1] = 1;
             }
-            else if (w == 6)
+            else if (setting_message == 6)
             {
                 Setting_for_PRINT[0] = 1;
                 Setting_for_PRINT[2] = 1;
             }
-            else if (w == 7)
+            else if (setting_message == 7)
             {
                 Setting_for_PRINT[0] = 1;
                 Setting_for_PRINT[1] = 1;
                 Setting_for_PRINT[2] = 1;
             }
-            else if (w == 8)
+            else if (setting_message == 8)
             {
                 Setting_for_PRINT[0] = 1;
                 Setting_for_PRINT[1] = 1;

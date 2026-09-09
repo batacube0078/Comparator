@@ -12,8 +12,8 @@ std::string ASCII_not_less_32_and_not_equal_127 = " !\"#$%&'()*+,-./0123456789:;
                                                     "[\\]^_`{|}~";
 
 
-bool Char_in_Vec_char(const char& S, const std::vector<char>& V) {
-    for (const char& el : V)
+bool Char_in_Vec_char(char S, const std::vector<char>& V) {
+    for (char el : V)
     {
         if (S == el)
         {
@@ -23,9 +23,9 @@ bool Char_in_Vec_char(const char& S, const std::vector<char>& V) {
     return false;
 }
 
-bool char_in_str(const char& S, const std::string& V)
+bool char_in_str(char S, const std::string& V)
 {
-    for (const char& el : V)
+    for (char el : V)
     {
         if (S == el)
         {
@@ -35,14 +35,14 @@ bool char_in_str(const char& S, const std::string& V)
     return false;
 }
 
-std::string ASCII(std::vector<char> without_vec = {}, const bool &  system_character = true)
+std::string ASCII(std::vector<char> without_vec = {}, bool system_character = true)
 {
 
     std::string result;
     std::string full;
 
 
-    for (const char& c : without_vec) {
+    for (char c : without_vec) {
         full+=c;
     }
 
@@ -64,7 +64,7 @@ std::string ASCII(std::vector<char> without_vec = {}, const bool &  system_chara
     return result;
 }
 
-std::string ASCII(const std::string &without_str = "", const bool &  system_character = true)
+std::string ASCII(const std::string &without_str = "", bool system_character = true)
 {
     std::string result;
 
@@ -83,7 +83,7 @@ std::string ASCII(const std::string &without_str = "", const bool &  system_char
     return result;
 }
 
-std::string ASCII(const char& without_char = 0, const bool &  system_character = 1)
+std::string ASCII(char without_char = 0, bool system_character = true)
 {
     std::string result;
 

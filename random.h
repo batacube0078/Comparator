@@ -8,7 +8,7 @@ static std::string CHARACTERS;
 
 bool can_I_take_more(const std::string& traveler, const std::string& victim)    
 {
-    for (const char& t : traveler)
+    for (char t : traveler)
     {
         if (!char_in_str(t, victim)) {
             return true;
@@ -19,7 +19,7 @@ bool can_I_take_more(const std::string& traveler, const std::string& victim)
 
 bool can_I_take_more(const std::string& traveler, const std::vector<char>& victim)
 {
-    for (const char &t : traveler)
+    for (char t : traveler)
     {
         if (!Char_in_Vec_char(t, victim))
         {
@@ -39,12 +39,12 @@ char random_char()
     return chars[dist(gen)];
 }
 
-std::string random_string_each( const int& Size, 
+std::string random_string_each( int  Size, 
 
                                 const std::vector<char>& Nochar = {}, 
-                                const bool &  system_char = 0,
+                                bool   system_char = 0,
  
-                                const char& change = 0
+                                char change = 0
                             )
 {
     CHARACTERS = ASCII(Nochar, system_char);
@@ -71,12 +71,12 @@ std::string random_string_each( const int& Size,
     return result;
 }
 
-std::string random_string_each(const int& Size,
+std::string random_string_each(int  Size,
 
                                const std::string& Nochar = "",
-                               const bool &  system_char = 0,
+                               bool   system_char = 0,
 
-                               const char& change = 0)
+                               char change = 0)
 {
 
     CHARACTERS = ASCII(Nochar, system_char);
@@ -104,12 +104,12 @@ std::string random_string_each(const int& Size,
     return result;
 }
 
-std::string random_string_each(const int& Size,
+std::string random_string_each(int  Size,
 
-                               const char& Nochar = 0,
-                               const bool &  system_char = 0,
+                               char Nochar = 0,
+                               bool   system_char = 0,
 
-                               const char& change = 0)
+                               char change = 0)
 {
 
     CHARACTERS = ASCII(Nochar, system_char);

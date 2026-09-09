@@ -9,7 +9,7 @@ namespace srf {
 NEWS news;
 
 template <class T>
-void write(const T& text, const uff::fsp& path, const bool &  b = 1) // Writes "text" to "path". If b is true, the system uses std::ios_base::app, otherwise it rewrites the file
+void write(const T& text, const uff::fsp& path, bool b = 1) // Writes "text" to "path". If b is true, the system uses std::ios_base::app, otherwise it rewrites the file
 {
     if (!b)
     {
@@ -27,7 +27,7 @@ void write(const T& text, const uff::fsp& path, const bool &  b = 1) // Writes "
     }
 }
 
-str read(const uff::fsp & path, const bool &  b = 1)      // If "b" is false, system use std::ios_base::binary
+str read(const uff::fsp & path, bool b = 1)      // If "b" is false, system use std::ios_base::binary
 {
     try
     {
@@ -208,7 +208,7 @@ uff::fsp Where_is_this_file_alt = "Where_is_this.txt"; // \0.000001\#1 element\W
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Print_main(const bool &  q = false, const int& Q = 0)
+void Print_main(bool q = false, int Q = 0)
 { // Used to check the main path variables
 
     print("\n");
@@ -776,10 +776,10 @@ class Service
                     str n2;
                     int coll_dangerous_char = 0;
 
-                    for (const char &check_dangerous_char : n)
+                    for (char check_dangerous_char : n)
                     {
                         bool dangerous = false;
-                        for (const char &dangerous_char : uff::dangerous_chars)
+                        for (char dangerous_char : uff::dangerous_chars)
                         {
                             // std::cout << "D" << dangerous_char << "D" << std::endl; // rubbish
                             if (dangerous_char == check_dangerous_char)
